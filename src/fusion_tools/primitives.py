@@ -70,7 +70,7 @@ except:
 # ── 2. 圆柱体 ───────────────────────────────────────
 
 def create_cylinder(radius: float = 10, height: float = 20,
-                    name: str = "Cylinder", origin=(0, 0, 0)) -> str:
+                    name: str = "Cylinder", origin=(0, 0)) -> str:
     """创建一个圆柱体"""
     x, y = origin
     return FUSION_HEADER + f"""
@@ -97,7 +97,7 @@ except:
 
 # ── 3. 球体 ──────────────────────────────────────────
 
-def create_sphere(radius: float = 10, name: str = "Sphere", origin=(0, 0, 0)) -> str:
+def create_sphere(radius: float = 10, name: str = "Sphere", origin=(0, 0)) -> str:
     """创建一个球体 (通过旋转半圆)"""
     x, y = origin
     return FUSION_HEADER + f"""
@@ -138,6 +138,25 @@ except:
 def create_bracket(width=40, height=30, thickness=5, hole_diameter=8,
                    name="Bracket") -> str:
     """创建一个简单带孔支架"""
+    # 预计算孔位置
+    half_d = hole_diameter / 2
+    holes = [
+        (half_d + 3, half_d + 3),
+        (width - half_d - 3, half_d + 3),
+        (half_d + 3, height - half_d - 3),
+        (width - half_d - 3, height - half_d - 3),
+    ]
+    hole_code = "\n".join(
+        f"""    hole_sketch = _root.sketches.add(_root.xYConstructionPlane)
+    hole_sketch.sketchCurves.sketchCircles.addByCenterRadius(
+        adsk.core.Point3D.create({hx}, {hy}, 0), {half_d})
+    hInput = _root.features.extrudeFeatures.createInput(
+        hole_sketch.profiles.item(0), adsk.fusion.FeatureOperations.CutFeatureOperation)
+    allExtent = adsk.fusion.ThroughAllExtentDefinition.create()
+    hInput.setOneSideExtent(allExtent, adsk.fusion.ExtentDirections.PositiveExtentDirection)
+    _root.features.extrudeFeatures.add(hInput)"""
+        for hx, hy in holes
+    )
     return FUSION_HEADER + f"""
 try:
     # 底板
@@ -154,25 +173,7 @@ try:
     base = _root.features.extrudeFeatures.add(extInput).bodies.item(0)
     
     # 四个角的孔
-    half_d = {hole_diameter} / 2
-    holes = [
-        ({half_d + 3}, {half_d + 3}),
-        ({width - half_d - 3}, {half_d + 3}),
-        ({half_d + 3}, {height - half_d - 3}),
-        ({width - half_d - 3}, {height - half_d - 3}),
-    ]
-    
-    for hx, hy in holes:
-        hole_sketch = _root.sketches.add(_root.xYConstructionPlane)
-        hole_sketch.sketchCurves.sketchCircles.addByCenterRadius(
-            adsk.core.Point3D.create(hx, hy, 0), half_d)
-        hInput = _root.features.extrudeFeatures.createInput(
-            hole_sketch.profiles.item(0), adsk.fusion.FeatureOperations.CutFeatureOperation)
-        hInput.setOneSideExtent(
-            adsk.fusion.AllExtentDefinition.create(
-                adsk.fusion.ExtentDirections.PositiveExtentDirection),
-            adsk.fusion.ExtentDirections.PositiveExtentDirection)
-        _root.features.extrudeFeatures.add(hInput)
+{hole_code}
     
     base.name = "{name}"
     print(f"CREATED_BRACKET name={{base.name}}")
