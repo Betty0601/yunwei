@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Fusion generated files
+*.f3d
+*.f3z
+*.stp
+*.step
+*.stl
+*.3mf
+*.igs
+*.iges
+*.dxf
+*.dwg
+*.pdf
+*.png
+*.jpg
+*.jpeg
+
+# Models directory (user-generated)
+models/*
+!models/.gitkeep
+
+# Assets (screenshots, etc.)
+assets/*
+!assets/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temp files
+/tmp/
+*.tmp
+*.bak
+
+# Secrets (never commit!)
+secrets.yaml
+secrets.yml
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+# Homebrew cache error outputs
+output.log
