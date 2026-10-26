@@ -1,0 +1,9 @@
+# Minimal Python dependencies for yunwei automation
+# Core MCP client uses only stdlib (urllib, json) — no required deps
+# Optional extras for GitHub integration and richer tests:
+
+PyGithub>=2.1.0
+requests>=2.31.0
+
+# Development only (not required for production runs)
+# pytest>=7.0.0

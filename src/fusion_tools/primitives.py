@@ -22,11 +22,37 @@ def _init():
     global _app, _ui, _design, _root
     _app = adsk.core.Application.get()
     _ui = _app.userInterface
-    # 获取或创建文档
+
+    # 优先复用已打开的 Fusion 设计文档，避免创建多余 Untitled
+    found_design_doc = None
     doc = _app.activeDocument
-    if not doc or not hasattr(doc, 'products') or doc.products.count == 0:
-        doc = _app.documents.add(adsk.core.DocumentTypes.FusionDesignDocumentType)
-    product = doc.products.item(0)
+
+    if doc:
+        for i in range(doc.products.count):
+            if adsk.fusion.Design.cast(doc.products.item(i)):
+                found_design_doc = doc
+                break
+
+    # 活动文档不是 Fusion 设计时，遍历所有打开的文档找一个
+    if not found_design_doc:
+        for i in range(_app.documents.count):
+            d = _app.documents.item(i)
+            for j in range(d.products.count):
+                if adsk.fusion.Design.cast(d.products.item(j)):
+                    found_design_doc = d
+                    break
+            if found_design_doc:
+                break
+
+    # 只有完全没有 Fusion 设计打开时才新建
+    if not found_design_doc:
+        found_design_doc = _app.documents.add(adsk.core.DocumentTypes.FusionDesignDocumentType)
+
+    # 确保活动
+    if found_design_doc != _app.activeDocument:
+        found_design_doc.activate()
+
+    product = found_design_doc.products.item(0)
     _design = adsk.fusion.Design.cast(product)
     _root = _design.rootComponent
 
