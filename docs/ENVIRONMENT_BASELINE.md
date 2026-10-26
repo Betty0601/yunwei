@@ -115,10 +115,12 @@ yunwei/
 | Undo 撤销 | ✅ | `fusion_mcp_update featureType=undo` |
 | 远程仓库创建 | ✅ | `gh repo create yunwei --source=$(pwd) --push` |
 | develop 分支推送 | ✅ | `git push -u origin develop` |
-| CI 首次运行 | ⚠️ failure — 缺 requirements.txt | 已创建，待重跑 |
-| document save | ❌ 未测试 | 阶段 D 目标 |
-| STEP/STL 导出 | ❌ 未实现 | 阶段 D 目标 |
-| 装配体 | ❌ 未实现 | 阶段 D 目标 |
+| 文档复用（避免多余 Untitled） | ✅ 执行前后都是 1 个文档 | primitives.py FUSION_HEADER |
+| **STEP 导出** | ✅ ISO-10303-21, 30KB/20³cube | `scripts/test_export.py` |
+| **STL 导出** | ✅ Binary STLB, 684B/20³cube | 同上 |
+| **导出后落盘验证** | ✅ `ls -la models/test_cube.{step,stl}` | 文件系统确认 |
+| document save | ⚠️ saveAs 需 Fusion Team 云端权限 | `doc.isSaved` 返回 False（正常，非 bug） |
+| 装配体 | ❌ 未实现 | 需研究 Joints/Components API |
 
 ## 10. 已知风险与限制
 
