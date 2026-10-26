@@ -65,3 +65,5 @@ id_ed25519
 
 # Homebrew cache error outputs
 output.log
+*.f3d
+*.f3z

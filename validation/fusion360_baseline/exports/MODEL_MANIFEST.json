@@ -1,0 +1,54 @@
+{
+  "task_id": "BASELINE-001",
+  "timestamp": "2026-10-26 14:32:06",
+  "fusion_version": "2706.1.14",
+  "components": [
+    {
+      "id": "C1",
+      "name": "TestBase",
+      "description": "基座 TEST_ONLY"
+    },
+    {
+      "id": "C2",
+      "name": "TestBearingSupport",
+      "description": "轴承座 TEST_ONLY"
+    },
+    {
+      "id": "C3",
+      "name": "TestShaft",
+      "description": "测试轴 TEST_ONLY"
+    },
+    {
+      "id": "C4",
+      "name": "TestEccentricWheel",
+      "description": "偏心轮 TEST_ONLY"
+    },
+    {
+      "id": "C5",
+      "name": "TestSlider",
+      "description": "直线滑块 TEST_ONLY"
+    },
+    {
+      "id": "C6",
+      "name": "TestGuideBracket",
+      "description": "导向支架 TEST_ONLY"
+    },
+    {
+      "id": "C7",
+      "name": "TestEndInterface",
+      "description": "端部接口 TEST_ONLY"
+    },
+    {
+      "id": "C8",
+      "name": "TestHousing",
+      "description": "外壳 TEST_ONLY"
+    },
+    {
+      "id": "A1",
+      "name": "TestAssembly",
+      "description": "根装配体 TEST_ONLY"
+    }
+  ],
+  "summary_from_log": null,
+  "components_created": 0
+}
