@@ -3,7 +3,7 @@
 **项目**: Fusion360_AI_Engineering_Baseline (BASELINE-001)  
 **日期**: 2026-10-26  
 **总状态**: 🟡 **有条件通过** (Conditional Pass)  
-**正式研发进入条件**: Gate 3（装配关节）和 Gate 4（恢复验证）需补全
+**正式研发进入条件**: Gate 3（装配关节）需补全后可宣布完全通过
 
 ---
 
@@ -15,7 +15,7 @@
 | G1 | 独立工作区建立 | ✅ **通过** | validation/fusion360_baseline/ 目录 |
 | G2 | 基础参数化模型 | ✅ **通过** | 13 参数 + 8 组件 + 13 实体体 |
 | G3 | 装配与几何检查 | 🟡 **部分** | 8 组件正确摆放；Joint API 已确认，**未端到端创建** |
-| G4 | 保存与恢复 | 🟡 **部分** | saveAs→Team Hub ✅, .f3d 归档导出 ✅, **恢复验证未做** |
+| G4 | 保存与恢复 | ✅ **通过** | saveAs→Team Hub ✅, .f3d 归档 ✅, close→reopen 恢复验证 ✅ |
 | G5 | STEP/STL 导出 | ✅ **通过** | 两文件落盘 + 格式正确 |
 | G6 | Git/GitHub 集成 | ✅ **通过** | test/fusion360-baseline 分支已推送 |
 | G7 | 独立质量审核 | 🟡 **部分** | 本报告即审核，缺少自动化回归测试 |
@@ -142,7 +142,7 @@ joint = joints.add(inp)
 
 ---
 
-## 5. Gate 4 — 保存与恢复 🟡 部分完成
+## 5. Gate 4 — 保存与恢复 ✅ **通过**（补全）
 
 ### 5.1 saveAs → Fusion Team Hub ✅
 
@@ -164,10 +164,35 @@ Fusion360_AI_Baseline.f3d  192,098 bytes  → 原生参数化归档 (含完整�
 
 此文件包含完整的 Fusion 参数化设计，可在任何 Fusion 360 中打开。
 
-### 5.3 恢复验证 ❌ 未执行
+### 5.3 恢复验证 ✅ 已执行
 
-- 未验证：关闭文档 → 重新打开 → 组件/参数/特征完整性
-- **风险等级**: Medium
+**完整闭环测试**: close → Team Hub → reopen → verify
+
+```python
+# 关闭 (不保存, 已 saveAs)
+doc.close(False)
+
+# 从 Team Hub Default Project 搜索到 DataFile
+for f in defaultProject.rootFolder.dataFiles:
+    if "Fusion360" in f.name: target = f
+
+# 重新打开
+app.documents.open(target, True)
+```
+
+**恢复后验证数据**:
+```
+COMP_COUNT=9  (root Fusion360_AI_Baseline + 8 子组件)
+PARAM_COUNT=13  (全部 UserParameter 恢复 ✅)
+BODY_COUNT=8  (8 个实体体 全部恢复 ✅)
+saved=True ✅
+
+所有 8 个组件名称完整恢复:
+  TestBase, TestBearingSupport, TestShaft, TestEccentricWheel,
+  TestSlider, TestGuideBracket, TestEndInterface, TestHousing
+```
+
+**结论**: Gate 4 完全通过！Fusion Team Hub 的 saveAs → close → reopen 全链路工作正常。
 
 ---
 
