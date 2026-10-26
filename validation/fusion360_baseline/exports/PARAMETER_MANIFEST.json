@@ -1,84 +1,97 @@
 {
   "task_id": "BASELINE-001",
-  "timestamp": "2026-10-26 14:32:06",
+  "timestamp": "2026-10-26 14:50:51",
   "parameters": [
     {
       "name": "test_base_length",
       "value": 200.0,
       "unit": "mm",
-      "description": "基座长度"
+      "description": "基座长度 TEST_ONLY",
+      "category": "TEST_ONLY"
     },
     {
       "name": "test_base_width",
       "value": 150.0,
       "unit": "mm",
-      "description": "基座宽度"
+      "description": "基座宽度 TEST_ONLY",
+      "category": "TEST_ONLY"
     },
     {
       "name": "test_base_height",
       "value": 25.0,
       "unit": "mm",
-      "description": "基座高度"
+      "description": "基座高度 TEST_ONLY",
+      "category": "TEST_ONLY"
     },
     {
       "name": "test_bearing_od",
       "value": 62.0,
       "unit": "mm",
-      "description": "轴承外径"
+      "description": "轴承外径 TEST_ONLY",
+      "category": "TEST_ONLY"
     },
     {
       "name": "test_bearing_id",
       "value": 35.0,
       "unit": "mm",
-      "description": "轴承内径"
+      "description": "轴承内径 TEST_ONLY",
+      "category": "TEST_ONLY"
     },
     {
       "name": "test_shaft_diameter",
       "value": 20.0,
       "unit": "mm",
-      "description": "测试轴径"
+      "description": "测试轴径 TEST_ONLY",
+      "category": "TEST_ONLY"
     },
     {
       "name": "test_shaft_length",
       "value": 120.0,
       "unit": "mm",
-      "description": "测试轴长"
+      "description": "测试轴长 TEST_ONLY",
+      "category": "TEST_ONLY"
     },
     {
       "name": "test_eccentric_offset",
       "value": 5.0,
       "unit": "mm",
-      "description": "偏心量"
+      "description": "偏心量 TEST_ONLY",
+      "category": "TEST_ONLY"
     },
     {
       "name": "test_slider_width",
       "value": 40.0,
       "unit": "mm",
-      "description": "滑块宽度"
+      "description": "滑块宽度 TEST_ONLY",
+      "category": "TEST_ONLY"
     },
     {
       "name": "test_slider_height",
       "value": 30.0,
       "unit": "mm",
-      "description": "滑块高度"
+      "description": "滑块高度 TEST_ONLY",
+      "category": "TEST_ONLY"
     },
     {
       "name": "test_hole_diameter",
       "value": 8.0,
       "unit": "mm",
-      "description": "安装孔径"
+      "description": "安装孔径 TEST_ONLY",
+      "category": "TEST_ONLY"
     },
     {
       "name": "test_clearance",
       "value": 0.5,
       "unit": "mm",
-      "description": "配合间隙"
+      "description": "配合间隙 TEST_ONLY",
+      "category": "TEST_ONLY"
     },
     {
       "name": "test_part_spacing",
       "value": 10.0,
       "unit": "mm",
-      "description": "零件间距"
+      "description": "零件间距 TEST_ONLY",
+      "category": "TEST_ONLY"
     }
   ]
 }
