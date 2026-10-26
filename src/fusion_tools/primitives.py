@@ -22,16 +22,34 @@ def _init():
     global _app, _ui, _design, _root
     _app = adsk.core.Application.get()
     _ui = _app.userInterface
-    # 获取或创建文档
-    doc = _app.activeDocument
+    doc = None
+
+    # 1. 优先使用活动文档
+    try:
+        doc = _app.activeDocument
+    except Exception:
+        doc = None
+
+    # 2. 活动文档不可用？找第一个 Fusion 设计文档
+    if not doc or not hasattr(doc, 'products') or doc.products.count == 0:
+        for i in range(_app.documents.count):
+            d = _app.documents.item(i)
+            try:
+                if d.products.count > 0:
+                    doc = d
+                    break
+            except Exception:
+                continue
+
+    # 3. 还是没有？创建新文档 (仅当确实需要时)
     if not doc or not hasattr(doc, 'products') or doc.products.count == 0:
         doc = _app.documents.add(adsk.core.DocumentTypes.FusionDesignDocumentType)
+        # 刚创建的文档会自动成为活动文档，设置为当前
+        _app.activeDocument = doc
+
     product = doc.products.item(0)
     _design = adsk.fusion.Design.cast(product)
     _root = _design.rootComponent
-
-def _make_point(x, y, z=0):
-    return adsk.core.Point3D.create(float(x), float(y), float(z))
 
 _init()
 """
