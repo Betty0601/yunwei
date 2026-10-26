@@ -67,3 +67,5 @@ id_ed25519
 output.log
 *.f3d
 *.f3z
+*.f3d
+*.f3z
