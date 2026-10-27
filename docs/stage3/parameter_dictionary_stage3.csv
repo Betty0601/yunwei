@@ -1,0 +1,87 @@
+---
+document_id: DMS-P3-PARAM-07
+title: 阶段 3 参数字典
+version: 0.1.0
+status: DRAFT
+created_at: 2026-10-27
+---
+
+# 阶段 3 参数字典
+
+**说明**：本 CSV 融合阶段 2 的核心参数 + 阶段 3 新增参数，至少 40 项。
+
+## 参数类别编码
+
+| 类别 | 含义 |
+|------|------|
+| A | 应用/临床需求参数 |
+| B | 机构几何参数 |
+| C | 运动学参数 |
+| D | 动力学/载荷参数 |
+| E | 驱动/电机参数 |
+| F | 热/电/成本/重量等外围参数 |
+| G | 环境/测试参数 |
+
+```csv
+id,name,symbol,unit,value_or_expression,category,source,status,notes
+PAR-001,单边振幅,A,m,0.010,A,Project Master Prompt,FROZEN,10 mm
+PAR-002,峰峰值行程,S,m,0.020,A,Project Master Prompt,FROZEN,20 mm = 2A
+PAR-003,最低工作频率,f_min,Hz,15,A,Project Master Prompt,FROZEN,
+PAR-004,最高工作频率,f_max,Hz,60,A,Project Master Prompt,FROZEN,
+PAR-005,频率档位,f_steps,Hz,"{15,30,45,60}",A,Project Master Prompt,FROZEN,4档
+PAR-006,电池额定电压,V_bat,V,22.2,A,Project Master Prompt,FROZEN,6S LiPo
+PAR-007,电池额定容量,Q_bat,Ah,2.5,A,Project Master Prompt,FROZEN,
+PAR-008,电池总能量,E_bat,Wh,V_bat × Q_bat,A,Calculated,FROZEN,= 55.5 Wh
+PAR-009,目标续航,t_run,h,3,A,Project Master Prompt,FROZEN,
+PAR-010,理想平均功率预算,P_ideal_avg,W,E_bat / t_run,A,Calculated,FROZEN,= 18.5 W
+PAR-011,目标整机重量,W_total,g,1600,A,Project Master Prompt,FROZEN,
+PAR-012,噪声目标,Lp_target,dB(A),45,A,Project Master Prompt,DRAFT,测试条件待冻结
+PAR-013,重力加速度,g,m/s²,9.81,CONST,Physics,FROZEN,
+PAR-014,偏心距,e,m,0.010,B,Design Intent,PARAMETERIZED,曲柄半径r=e
+PAR-015,连杆长度,L,m,TBD,B,TBD,PARAMETERIZED,
+PAR-016,连杆比,lambda,-,e/L,B,Calculated,PARAMETERIZED,典型 0.1-0.2
+PAR-017,一阶偏心机构转角,theta,rad,omega*t,B,Kinematics,FROZEN,
+PAR-018,工作角频率,omega,rad/s,2*pi*f,C,Kinematics,FROZEN,
+PAR-019,峰值速度,v_max,m/s,2*pi*f*A,C,Kinematics,FROZEN,
+PAR-020,峰值加速度,a_max,m/s²,(2*pi*f)^2*A,C,Kinematics,FROZEN,
+PAR-021,加速度g倍数,a_over_g,-,a_max/g,C,Calculated,FROZEN,
+PAR-022,运动等效质量(治疗头端),m_eff_head,kg,TBD,D,Dynamics,PARAMETERIZED,目标<=0.05kg
+PAR-023,运动等效质量(平衡端),m_eff_bal,kg,TBD,D,Dynamics,PARAMETERIZED,动态平衡设计确定
+PAR-024,总运动等效质量,m_eff_total,kg,m_eff_head + m_eff_bal,D,Dynamics,PARAMETERIZED,
+PAR-025,一阶惯性力,F_inertia_N,kg,m_eff * a_max,D,Dynamics,FROZEN,简化牛顿模型
+PAR-026,峰值机械功率,P_mech_peak,W,F_inertia * v_max,D,Dynamics,FROZEN,
+PAR-027,平均机械功率,P_mech_avg,W,0.5 * P_mech_peak,D,Dynamics,FROZEN,正弦载荷近似
+PAR-028,传动效率,eta,decimal,"{0.70,0.80,0.90}",F,Design Intent,PARAMETERIZED,
+PAR-029,电机输出功率需求,P_motor_out,W,P_mech / eta,D,Dynamics,FROZEN,
+PAR-030,电机转矩需求,T_req,N·m,P_motor_out / omega,D,Dynamics,FROZEN,
+PAR-031,机构转速 n=60f,motor_direct_rpm,r/min,60*f,E,Kinematics,FROZEN,直接耦合
+PAR-032,减速比,i,-,TBD,E,Design Intent,PARAMETERIZED,若用传动
+PAR-033,电机转速(带传动),motor_rpm,r/min,60*f*i,E,Kinematics,FROZEN,
+PAR-034,电机额定电压范围,V_motor_min,V,18.0,E,Electrical,FROZEN,电池最低3.0V/cell
+PAR-035,电机额定电压范围,V_motor_max,V,25.2,E,Electrical,FROZEN,电池满电4.2V/cell
+PAR-036,电池持续放电倍率,C_discharge_cont,C,TBD,F,Battery Spec,PARAMETERIZED,>=10C建议
+PAR-037,电池峰值放电倍率,C_discharge_peak,C,TBD,F,Battery Spec,PARAMETERIZED,>=20C建议
+PAR-038,环境温度(测试),T_amb,C,25,G,Testing,FROZEN,
+PAR-039,电机外壳温度上限,T_motor_case_max,C,65,E,Thermal,FROZEN,类B绝缘
+PAR-040,热阻(等效),R_th_case,C/W,TBD,F,Thermal,PARAMETERIZED,
+PAR-041,总损耗上限,P_total_loss_max,W,(T_motor_case_max - T_amb) / R_th_case,F,Thermal,FROZEN,
+PAR-042,电机铜损,P_cu,W,I^2 * R_winding,E,Motor,PARAMETERIZED,参数化
+PAR-043,电机铁损,P_fe,W,k_fe * f^alpha,E,Motor,PARAMETERIZED,alpha=1.3~1.5
+PAR-044,电机效率,eta_motor,decimal,TBD,E,Motor,PARAMETERIZED,典型0.80~0.95
+PAR-045,控制板功耗,P_ctrl,W,"1-3",F,Electronics,DRAFT,含MCU+IMU
+PAR-046,驱动器损耗,P_drv,W,"1-5",F,Electronics,PARAMETERIZED,取决于MOSFET和PWM
+PAR-047,轴承基本额定寿命,L10_hours,h,(10^6 / (60*n)) * (C/P)^3,D,Bearing,FROZEN,球轴承p=3
+PAR-048,轴承基本额定动载荷,C,N,TBD,D,Bearing,PARAMETERIZED,
+PAR-049,轴承等效载荷,P,N,TBD,D,Bearing,PARAMETERIZED,
+PAR-050,噪声测试距离,Lp_test_distance,cm,TBD,G,Testing,PARAMETERIZED,需冻结
+PAR-051,噪声测试环境,Lp_env,-,TBD,G,Testing,PARAMETERIZED,消声/半消声/
+PAR-052,摩擦系数(机构),mu_inst,-,"0.001-0.01",D,Tribology,DRAFT,轴承/导向
+PAR-053,接触阻尼系数,c_contact,N·s/m,TBD,D,Biomechanics,PARAMETERIZED,取决于组织
+PAR-054,动态平衡质量比,m_bal_over_m_head,-,TBD,D,Dynamics,PARAMETERIZED,理想=1.0(理想一阶平衡)
+PAR-055,曲柄连杆比(lambda),lambda_cl,-,TBD,B,Kinematics,PARAMETERIZED,实际有限L模型
+PAR-056,二阶峰值加速度修正,lambda2_corr,decimal,"1 + 2*lambda_cl",C,Kinematics,FROZEN,有限L修正
+PAR-057,60Hz档振幅自适应,A_60Hz,m,TBD,A,Design Strategy,PARAMETERIZED,可能降为0.008-0.010m
+PAR-058,电池保护板重量,W_bms,g,"20-30",F,Mechanical,DRAFT,
+PAR-059,结构模态一阶频率,f_struct_mode1,Hz,TBD,G,Modal Analysis,PARAMETERIZED,需远离f_work
+PAR-060,机构一阶固有频率,f_mach_mode1,Hz,TBD,D,Dynamics,PARAMETERIZED,需远离f_work避免共振
+```
